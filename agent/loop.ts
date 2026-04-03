@@ -258,3 +258,5 @@ export class SigilAgent {
     }
   }
 }
+
+// emit_program intercept breaks the loop — no extra round-trip needed
