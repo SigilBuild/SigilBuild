@@ -24,3 +24,4 @@ export type Config = typeof config;
 
 // Re-export for convenience
 export { Schema as ConfigSchema };
+
