@@ -45,3 +45,5 @@ wallet = "~/.config/solana/id.json"
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 `;
 }
+
+// ANCHOR_VERSION and SOLANA_CLUSTER are injected from config at generation time
