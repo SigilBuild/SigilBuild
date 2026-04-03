@@ -57,3 +57,4 @@ export function validateDesign(design: ProgramDesign): ValidationResult {
 }
 
 // Validation runs before any file is written — fail fast, never emit broken code
+
