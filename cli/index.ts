@@ -96,3 +96,4 @@ main().catch((err) => {
 });
 
 // CLI validates input with Zod before calling the agent — no bad requests reach Claude
+
