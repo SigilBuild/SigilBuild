@@ -42,3 +42,5 @@ export const GenerationRequestSchema = z.object({
   template: z.enum(["token", "staking", "vault", "nft", "governance", "custom"]).optional(),
   outputDir: z.string().optional(),
 });
+
+// Schemas are the single source of truth for all API boundaries
