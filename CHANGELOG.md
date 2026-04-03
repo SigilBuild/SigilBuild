@@ -15,3 +15,4 @@
 - Zod schema validation on all inputs and config
 - Full test suite: templates, builders, validator, IDL emitter
 - Docker support for containerized generation
+
