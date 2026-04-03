@@ -80,3 +80,4 @@ export function selectTemplate(description: string, hint?: TemplateKind): Templa
 }
 
 // Extend TEMPLATES array to add custom templates at runtime
+
