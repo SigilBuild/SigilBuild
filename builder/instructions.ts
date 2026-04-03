@@ -49,3 +49,5 @@ function toSnakeCase(s: string): string {
     .toLowerCase()
     .replace(/^_/, "");
 }
+
+// toPascalCase / toSnakeCase kept local — no external string dep needed
