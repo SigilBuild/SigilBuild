@@ -22,3 +22,6 @@ export function createLogger(ns: string) {
     error: (msg: string, meta?: unknown) => { if (LEVELS.error >= min) console.error(format("error", ns, msg, meta)); },
   };
 }
+
+// Export log level type for external consumers
+export type { Level };
