@@ -57,3 +57,4 @@ function mapType(rustType: string): unknown {
 }
 
 // IDL format follows Anchor 0.31 spec
+
