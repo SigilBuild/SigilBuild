@@ -63,3 +63,5 @@ export interface GenerationRequest {
   template?: TemplateKind;
   outputDir?: string;
 }
+
+// All generation inputs and outputs are fully typed
