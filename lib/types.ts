@@ -65,3 +65,4 @@ export interface GenerationRequest {
 }
 
 // All generation inputs and outputs are fully typed
+
