@@ -46,3 +46,4 @@ bun run test
 ```
 
 Tests cover: template selection, account space estimation, Rust struct emission, instruction handler generation, design validation, IDL output.
+
