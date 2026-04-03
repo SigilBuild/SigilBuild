@@ -21,3 +21,5 @@ Anchor patterns to always follow:
 - Space calculation: 8 (discriminator) + fields
 
 Output complete, compilable Rust. Never truncate or use placeholders.`;
+
+// SIGIL_SYSTEM enforces strict tool ordering: select → accounts → instructions → emit
