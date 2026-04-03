@@ -110,3 +110,4 @@ function buildErrorsRs(design: ProgramDesign): string {
 }
 
 // buildProgram is the single assembly point — all emitters converge here
+
