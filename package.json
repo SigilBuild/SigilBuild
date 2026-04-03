@@ -1,0 +1,29 @@
+{
+  "name": "sigil",
+  "version": "1.0.0",
+  "description": "AI-powered Solana Anchor program generator",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "sigil": "dist/cli/index.js"
+  },
+  "scripts": {
+    "dev": "bun run --watch cli/index.ts",
+    "start": "node dist/cli/index.js",
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.36.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  }
+}

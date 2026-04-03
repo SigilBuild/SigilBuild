@@ -1,0 +1,149 @@
+<svg viewBox="0 0 820 560" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', 'Fira Code', monospace">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d0f14"/>
+      <stop offset="100%" stop-color="#090b0f"/>
+    </linearGradient>
+    <linearGradient id="hdr2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Window -->
+  <rect width="820" height="560" rx="12" fill="url(#bg2)"/>
+  <rect width="820" height="560" rx="12" fill="none" stroke="#2a2d3a" stroke-width="1"/>
+
+  <!-- Title bar -->
+  <rect width="820" height="42" rx="12" fill="#13151d"/>
+  <rect y="30" width="820" height="12" fill="#13151d"/>
+  <circle cx="20" cy="21" r="6" fill="#ff5f57"/>
+  <circle cx="40" cy="21" r="6" fill="#ffbd2e"/>
+  <circle cx="60" cy="21" r="6" fill="#28c840"/>
+  <rect x="290" y="8" width="240" height="26" rx="5" fill="url(#hdr2)" opacity="0.9"/>
+  <text x="410" y="25" text-anchor="middle" fill="white" font-size="11" font-weight="bold" letter-spacing="2">SIGIL · GENERATED OUTPUT</text>
+
+  <!-- Left panel: file tree -->
+  <rect x="0" y="42" width="240" height="518" rx="0" fill="#0f1117"/>
+  <rect x="240" y="42" width="1" height="518" fill="#1e2130"/>
+
+  <text x="16" y="68" fill="#475569" font-size="10" font-weight="bold" letter-spacing="1.5">EXPLORER</text>
+
+  <!-- Tree items -->
+  <text x="16" y="92" fill="#a78bfa" font-size="12" font-weight="bold">staking/</text>
+
+  <text x="24" y="112" fill="#64748b" font-size="11">├─ programs/</text>
+  <text x="32" y="128" fill="#64748b" font-size="11">│  └─ staking/src/</text>
+  <rect x="40" y="138" width="180" height="18" rx="3" fill="#1e2130"/>
+  <text x="48" y="150" fill="#e2e8f0" font-size="11">│     ├─ lib.rs</text>
+  <text x="48" y="166" fill="#94a3b8" font-size="11">│     ├─ state.rs</text>
+  <text x="48" y="182" fill="#94a3b8" font-size="11">│     ├─ errors.rs</text>
+  <text x="48" y="198" fill="#94a3b8" font-size="11">│     └─ instructions/</text>
+  <text x="56" y="214" fill="#64748b" font-size="11">│        ├─ initialize.rs</text>
+  <text x="56" y="230" fill="#64748b" font-size="11">│        ├─ stake.rs</text>
+  <text x="56" y="246" fill="#64748b" font-size="11">│        ├─ unstake.rs</text>
+  <text x="56" y="262" fill="#64748b" font-size="11">│        ├─ claim.rs</text>
+  <text x="56" y="278" fill="#64748b" font-size="11">│        └─ update.rs</text>
+
+  <text x="24" y="298" fill="#64748b" font-size="11">├─ idl/</text>
+  <text x="32" y="314" fill="#94a3b8" font-size="11">│  └─ staking.json</text>
+  <text x="24" y="334" fill="#94a3b8" font-size="11">├─ Anchor.toml</text>
+  <text x="24" y="350" fill="#94a3b8" font-size="11">└─ Cargo.toml</text>
+
+  <!-- Stats box -->
+  <rect x="12" y="370" width="216" height="80" rx="6" fill="#13151d" stroke="#2a2d3a" stroke-width="1"/>
+  <text x="24" y="390" fill="#475569" font-size="10" letter-spacing="1">SUMMARY</text>
+  <text x="24" y="408" fill="#64748b" font-size="11">Lines of Rust  <tspan fill="#a78bfa" font-weight="bold">847</tspan></text>
+  <text x="24" y="424" fill="#64748b" font-size="11">Instructions   <tspan fill="#818cf8" font-weight="bold">5</tspan></text>
+  <text x="24" y="440" fill="#64748b" font-size="11">Accounts       <tspan fill="#38bdf8" font-weight="bold">3</tspan></text>
+
+  <!-- Right panel: code -->
+  <text x="260" y="68" fill="#475569" font-size="10" font-weight="bold" letter-spacing="1.5">lib.rs</text>
+  <line x1="256" y1="76" x2="810" y2="76" stroke="#1e2130" stroke-width="1"/>
+
+  <!-- Code lines -->
+  <text x="268" y="98"  fill="#475569" font-size="11">1</text>
+  <text x="292" y="98"  fill="#64748b" font-size="11">use anchor_lang::prelude::*;</text>
+
+  <text x="268" y="114" fill="#475569" font-size="11">2</text>
+  <text x="292" y="114" fill="#64748b" font-size="11">use anchor_spl::token::{self, Token, TokenAccount, Mint};</text>
+
+  <text x="268" y="130" fill="#475569" font-size="11">3</text>
+
+  <text x="268" y="146" fill="#475569" font-size="11">4</text>
+  <text x="292" y="146" fill="#818cf8" font-size="11">declare_id!</text>
+  <text x="375" y="146" fill="#e2e8f0" font-size="11">("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");</text>
+
+  <text x="268" y="162" fill="#475569" font-size="11">5</text>
+
+  <text x="268" y="178" fill="#475569" font-size="11">6</text>
+  <text x="292" y="178" fill="#7c3aed" font-size="11">#[program]</text>
+
+  <text x="268" y="194" fill="#475569" font-size="11">7</text>
+  <text x="292" y="194" fill="#38bdf8" font-size="11">pub mod</text>
+  <text x="340" y="194" fill="#e2e8f0" font-size="11"> staking {</text>
+
+  <text x="268" y="210" fill="#475569" font-size="11">8</text>
+  <text x="292" y="210" fill="#64748b" font-size="11">    use super::*;</text>
+
+  <text x="268" y="226" fill="#475569" font-size="11">9</text>
+
+  <text x="268" y="242" fill="#475569" font-size="11">10</text>
+  <text x="292" y="242" fill="#94a3b8" font-size="11">    /// Initialize staking pool with 15% APY and 7-day lockup</text>
+
+  <rect x="256" y="248" width="556" height="18" rx="2" fill="#1a1c27"/>
+  <text x="268" y="260" fill="#475569" font-size="11">11</text>
+  <text x="292" y="260" fill="#38bdf8" font-size="11">    pub fn</text>
+  <text x="334" y="260" fill="#4ade80" font-size="11"> initialize_pool</text>
+  <text x="434" y="260" fill="#e2e8f0" font-size="11">(ctx: Context&lt;InitializePool&gt;, apy_bps: u64) -&gt; Result&lt;()&gt; {</text>
+
+  <text x="268" y="276" fill="#475569" font-size="11">12</text>
+  <text x="292" y="276" fill="#64748b" font-size="11">        let pool = &amp;mut ctx.accounts.pool;</text>
+
+  <text x="268" y="292" fill="#475569" font-size="11">13</text>
+  <text x="292" y="292" fill="#64748b" font-size="11">        pool.authority = ctx.accounts.authority.key();</text>
+
+  <text x="268" y="308" fill="#475569" font-size="11">14</text>
+  <text x="292" y="308" fill="#64748b" font-size="11">        pool.apy_bps = apy_bps;  </text>
+  <text x="460" y="308" fill="#475569" font-size="11">// 1500 = 15%</text>
+
+  <text x="268" y="324" fill="#475569" font-size="11">15</text>
+  <text x="292" y="324" fill="#64748b" font-size="11">        pool.lockup_seconds = </text>
+  <text x="440" y="324" fill="#fbbf24" font-size="11">7</text>
+  <text x="450" y="324" fill="#64748b" font-size="11"> * 24 * 60 * 60;</text>
+
+  <text x="268" y="340" fill="#475569" font-size="11">16</text>
+  <text x="292" y="340" fill="#64748b" font-size="11">        pool.total_staked = 0;</text>
+
+  <text x="268" y="356" fill="#475569" font-size="11">17</text>
+  <text x="292" y="356" fill="#38bdf8" font-size="11">        Ok</text>
+  <text x="316" y="356" fill="#e2e8f0" font-size="11">(())</text>
+
+  <text x="268" y="372" fill="#475569" font-size="11">18</text>
+  <text x="292" y="372" fill="#e2e8f0" font-size="11">    }</text>
+
+  <!-- line divider -->
+  <line x1="256" y1="388" x2="810" y2="388" stroke="#1e2130" stroke-width="1"/>
+
+  <!-- IDL preview section -->
+  <text x="268" y="408" fill="#475569" font-size="10" font-weight="bold" letter-spacing="1.5">IDL PREVIEW  —  idl/staking.json</text>
+  <line x1="256" y1="416" x2="810" y2="416" stroke="#1e2130" stroke-width="1"/>
+
+  <text x="268" y="436" fill="#64748b" font-size="11">{</text>
+  <text x="268" y="452" fill="#64748b" font-size="11">  <tspan fill="#fbbf24">"name"</tspan>: <tspan fill="#4ade80">"staking"</tspan>,  <tspan fill="#fbbf24">"version"</tspan>: <tspan fill="#4ade80">"0.1.0"</tspan>,</text>
+  <text x="268" y="468" fill="#64748b" font-size="11">  <tspan fill="#fbbf24">"instructions"</tspan>: [</text>
+  <text x="268" y="484" fill="#64748b" font-size="11">    <tspan fill="#4ade80">"initialize_pool"</tspan>, <tspan fill="#4ade80">"stake"</tspan>, <tspan fill="#4ade80">"unstake"</tspan>, <tspan fill="#4ade80">"claim_rewards"</tspan>, ...</text>
+  <text x="268" y="500" fill="#64748b" font-size="11">  ],  <tspan fill="#fbbf24">"accounts"</tspan>: [ <tspan fill="#4ade80">"StakePool"</tspan>, <tspan fill="#4ade80">"StakeEntry"</tspan>, <tspan fill="#4ade80">"RewardVault"</tspan> ]</text>
+  <text x="268" y="516" fill="#64748b" font-size="11">}</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="520" width="820" height="40" rx="0" fill="#0d0f14"/>
+  <rect x="0" y="520" width="820" height="1" fill="#1e2130"/>
+  <text x="24" y="545" fill="#7c3aed" font-size="10" font-weight="bold">SIGIL</text>
+  <text x="70" y="545" fill="#475569" font-size="10">Generated program ready to build  ·  anchor build</text>
+  <text x="590" y="545" fill="#475569" font-size="10">Solana 1.18  ·  Anchor 0.31</text>
+</svg>
