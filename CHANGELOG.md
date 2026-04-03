@@ -16,3 +16,4 @@
 - Full test suite: templates, builders, validator, IDL emitter
 - Docker support for containerized generation
 
+
