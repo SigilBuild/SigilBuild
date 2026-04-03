@@ -23,3 +23,4 @@ Anchor patterns to always follow:
 Output complete, compilable Rust. Never truncate or use placeholders.`;
 
 // SIGIL_SYSTEM enforces strict tool ordering: select → accounts → instructions → emit
+
