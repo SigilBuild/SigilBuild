@@ -55,3 +55,5 @@ function mapType(rustType: string): unknown {
   };
   return primitives[rustType] ?? "bytes";
 }
+
+// IDL format follows Anchor 0.31 spec
