@@ -55,3 +55,5 @@ export function validateDesign(design: ProgramDesign): ValidationResult {
 
   return { valid: errors.length === 0, errors, warnings };
 }
+
+// Validation runs before any file is written — fail fast, never emit broken code
