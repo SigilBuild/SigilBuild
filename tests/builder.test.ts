@@ -180,3 +180,4 @@ describe("emitIdl", () => {
 });
 
 // Tests cover: template selection, space calc, struct emit, validator, IDL output
+
