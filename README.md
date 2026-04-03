@@ -3,7 +3,6 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)
 ![Bun](https://img.shields.io/badge/Bun-1.2-black)
-![Claude](https://img.shields.io/badge/Claude-Opus%204.6-orange)
 ![Anchor](https://img.shields.io/badge/Anchor-0.31-purple)
 
 **Describe a Solana program. Sigil writes the code.**
