@@ -51,3 +51,4 @@ function toSnakeCase(s: string): string {
 }
 
 // toPascalCase / toSnakeCase kept local — no external string dep needed
+
