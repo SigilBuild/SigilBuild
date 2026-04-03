@@ -31,3 +31,5 @@ for (const file of result.files) {
 }
 
 console.log("\nDone. Run: cd output/token_staking && anchor build");
+
+// Run with: bun run examples/staking.ts
