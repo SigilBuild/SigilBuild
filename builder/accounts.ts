@@ -50,3 +50,4 @@ export function emitAccountStruct(account: AccountDef): string {
 }
 
 // Space includes 8-byte Anchor discriminator prefix
+
