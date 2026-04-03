@@ -178,3 +178,5 @@ describe("emitIdl", () => {
     expect(authorityField?.type).toBe("publicKey");
   });
 });
+
+// Tests cover: template selection, space calc, struct emit, validator, IDL output
