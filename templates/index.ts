@@ -78,3 +78,5 @@ export function selectTemplate(description: string, hint?: TemplateKind): Templa
 
   return best;
 }
+
+// Extend TEMPLATES array to add custom templates at runtime
