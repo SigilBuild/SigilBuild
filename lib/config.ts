@@ -21,3 +21,6 @@ function load() {
 
 export const config = load();
 export type Config = typeof config;
+
+// Re-export for convenience
+export { Schema as ConfigSchema };
