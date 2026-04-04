@@ -52,6 +52,7 @@ export interface GenerationResult {
   design: ProgramDesign;
   files: GeneratedFile[];
   linesGenerated: number;
+  totalAccountSpaceBytes?: number;
   generatedAt: number;
 }
 
