@@ -46,11 +46,27 @@ export function validateDesign(design: ProgramDesign): ValidationResult {
     warnings.push("Program has no account definitions — likely incomplete");
   }
 
-  // Duplicate names
+  // Duplicate instruction names — Anchor panics at compile time, not runtime.
+  // Catching here avoids a confusing `proc-macro panic` in the build output.
   const instrNames = design.instructions.map((i) => i.name);
   const dupeInstrs = instrNames.filter((n, i) => instrNames.indexOf(n) !== i);
   if (dupeInstrs.length > 0) {
-    errors.push(`Duplicate instruction names: ${dupeInstrs.join(", ")}`);
+    errors.push(`Duplicate instruction names: ${dupeInstrs.join(", ")} — Anchor will panic at compile time`);
+  }
+
+  // Unsigned mutations: every instruction that writes to an account must have
+  // at least one signer in its account context. Silent omission is the most
+  // common security mistake in generated programs.
+  for (const instr of design.instructions) {
+    const hasSigner = instr.accounts.some(
+      (a) => a.toLowerCase().includes("authority") || a.toLowerCase().includes("signer") || a.toLowerCase().includes("owner")
+    );
+    const mutatesState = instr.accounts.some(
+      (a) => !a.toLowerCase().includes("program") && !a.toLowerCase().includes("sysvar")
+    );
+    if (mutatesState && !hasSigner) {
+      warnings.push(`Instruction "${instr.name}" mutates state but has no apparent signer account — verify authority checks`);
+    }
   }
 
   return { valid: errors.length === 0, errors, warnings };
