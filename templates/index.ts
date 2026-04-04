@@ -29,10 +29,13 @@ export const TEMPLATES: Template[] = [
   {
     kind: "token",
     description: "SPL token with custom mint authority, freeze authority, and transfer hooks",
-    keywords: ["token", "mint", "spl", "fungible", "transfer", "freeze", "burn"],
+    // Explicit token-2022 keywords score higher than vault keywords when
+    // extensions (hooks, confidential transfers, interest-bearing) are mentioned.
+    // Previously vault was winning on "transfer" keyword overlap.
+    keywords: ["token", "mint", "spl", "fungible", "transfer", "freeze", "burn", "token-2022", "extension", "hook", "confidential", "interest", "permanent"],
     baseDesign: {
       customErrors: ["MintAuthorityMismatch", "FreezeAuthorityMismatch", "Frozen", "OverMintCap"],
-      features: ["Mint authority controls", "Token metadata", "Transfer hook support"],
+      features: ["Mint authority controls", "Token metadata", "Transfer hook support", "Token-2022 extensions"],
     },
   },
   {
