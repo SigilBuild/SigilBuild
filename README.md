@@ -13,17 +13,11 @@ Sigil is an AI agent that turns plain-English descriptions into complete, produc
 
 ## Generate From the CLI
 
-![CLI preview](assets/preview-cli.svg)
+![Terminal preview](assets/preview-terminal.svg)
 
-One command. Describe what you want to build. Sigil's Claude agent reasons through the architecture, picks the right template, designs the accounts and instructions, and emits compilable code.
+One command. Describe what you want to build. Sigil's Claude agent reasons through the architecture — scoring templates, computing exact account space, inferring PDA seeds — then emits compilable Anchor Rust in real time.
 
----
-
-## Inspect the Output
-
-![Output preview](assets/preview-output.svg)
-
-Every generation produces a complete Anchor project: Rust source split by instruction, on-chain account structs with space estimates, a valid IDL, and the config files you need to build and deploy.
+Every generation produces a complete Anchor project: Rust source split by instruction, on-chain account structs with exact space, a valid IDL, and the config files needed to build and deploy.
 
 ---
 
@@ -118,6 +112,71 @@ sigil/
 | `OUTPUT_DIR` | `./output` | Where to write generated programs |
 | `SOLANA_CLUSTER` | `devnet` | Target cluster for Anchor.toml |
 | `ANCHOR_VERSION` | `0.31.0` | Anchor version in generated Cargo.toml |
+
+---
+
+## Technical Spec
+
+### Anchor Account Space Calculation
+
+Sigil computes exact `space` parameters for every `#[account]` struct to avoid realloc failures at runtime:
+
+```
+space = 8 (discriminator) + Σ field_sizes
+```
+
+Field encoding rules Sigil enforces:
+
+| Rust Type | On-chain bytes | Notes |
+|-----------|---------------|-------|
+| `u64` / `i64` | 8 | |
+| `Pubkey` | 32 | |
+| `bool` | 1 | |
+| `String` | `4 + len` | 4-byte length prefix — **not flat 64** |
+| `Vec<T>` | `4 + n × item_size` | 4-byte length prefix + element array |
+| `Option<T>` | `1 + item_size` | 1-byte discriminant |
+
+A flat `64` for `String` is one of the most common space bugs in Anchor programs. Sigil catches it at design time.
+
+### PDA Canonical Bump Storage
+
+Generated programs store the canonical bump seed in the account struct:
+
+```rust
+pub bump: u8,  // canonical bump — stored to save ~20k CU vs re-derivation
+```
+
+Re-deriving the bump via `find_program_address` costs ~20,000 compute units. Storing it at init and passing it back in subsequent instructions is the standard Anchor pattern; Sigil enforces it.
+
+### Instruction Discriminators
+
+Anchor computes the discriminator as:
+```
+sha256("global:<instruction_name>")[..8]
+```
+
+Duplicate instruction names in the same program cause a **compile-time panic** in Anchor (not a runtime error). Sigil's validator checks for duplicates and surfaces the error before code is emitted.
+
+### Checked Arithmetic
+
+All generated `u64` arithmetic uses `checked_add` / `checked_sub`:
+
+```rust
+// NOTE: use checked_add/checked_sub for all u64 arithmetic.
+// Rust does not panic on integer overflow in release builds — silent wrap is a common exploit vector.
+```
+
+Solana release builds compile with `overflow-checks = false` by default. Silent integer wrap has been exploited in production programs. Sigil generates safe code by default.
+
+### Signer Validation
+
+Sigil's validator scans every instruction for unsigned state mutation:
+
+```
+if mutatesState && !hasSigner → warning: "Instruction mutates state but has no apparent signer"
+```
+
+Instructions that write to accounts without a signing authority are a common access control vulnerability. The warning is surfaced before emit.
 
 ---
 
