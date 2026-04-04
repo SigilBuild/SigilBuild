@@ -49,6 +49,10 @@ export function buildProgram(design: ProgramDesign): GenerationResult {
   files.push({ path: `idl/${design.name}.json`, content: emitIdl(design), lang: "json" });
 
   const linesGenerated = files.reduce((n, f) => n + f.content.split("\n").length, 0);
+  const totalSpaceBytes = design.accounts.reduce((sum, acc) => {
+    // Re-derive space for summary — same logic as builder/accounts.ts fieldSize()
+    return sum + acc.fields.length * 8 + 8; // rough estimate for log only
+  }, 0);
 
   return {
     programName: design.name,
@@ -56,6 +60,7 @@ export function buildProgram(design: ProgramDesign): GenerationResult {
     design,
     files,
     linesGenerated,
+    totalAccountSpaceBytes: totalSpaceBytes,
     generatedAt: Date.now(),
   };
 }
