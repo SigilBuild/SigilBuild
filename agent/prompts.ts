@@ -18,7 +18,9 @@ Anchor patterns to always follow:
 - Pool/config accounts use has_one constraints to verify authority
 - Token accounts use associated_token::* constraints
 - PDAs are derived with seeds = [b"prefix", key.as_ref()] pattern
-- Space calculation: 8 (discriminator) + fields
+- Space calculation: 8 (discriminator) + Σ field sizes; String = 4+len NOT flat 64; Vec<T> = 4 + n×item_size
+- Store canonical bump in account struct (pub bump: u8) — saves ~20k CU vs find_program_address on each ix
+- All u64 arithmetic must use checked_add/checked_sub — release builds do NOT panic on overflow
 
 Output complete, compilable Rust. Never truncate or use placeholders.`;
 
