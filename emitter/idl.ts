@@ -12,8 +12,8 @@ export function emitIdl(design: ProgramDesign): string {
       docs: [instr.description],
       accounts: instr.accounts.map((acc) => ({
         name: acc,
-        isMut: true,
-        isSigner: false,
+        isMut: !acc.toLowerCase().includes("program") && !acc.toLowerCase().includes("system"),
+        isSigner: acc.toLowerCase().includes("authority") || acc.toLowerCase().includes("signer"),
       })),
       args: instr.args.map((arg) => ({
         name: arg.name,
