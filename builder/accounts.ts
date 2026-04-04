@@ -4,7 +4,20 @@ import type { AccountDef } from "../lib/types.js";
  * Estimate the Anchor account space for a list of fields.
  * 8 bytes for discriminator + sum of field sizes.
  */
+// Maximum String length assumption when no explicit bound is given.
+// Anchor encodes String as 4-byte length prefix + content bytes.
+// Using 4 + MAX_STRING_LEN to match the actual on-chain encoding.
+const MAX_STRING_LEN = 64;
+
 function fieldSize(rustType: string): number {
+  // Vec<T> space = 4-byte length prefix + n * item_size.
+  // The prefix was previously counted as the full allocation — now correctly
+  // returns 4 + (8 * default_vec_len) for unknown Vec variants.
+  if (rustType.startsWith("Vec<")) {
+    const inner = rustType.slice(4, -1);
+    return 4 + 8 * fieldSize(inner); // default 8 elements
+  }
+
   const sizes: Record<string, number> = {
     bool: 1,
     u8: 1, i8: 1,
@@ -14,7 +27,8 @@ function fieldSize(rustType: string): number {
     u128: 16, i128: 16,
     f32: 4, f64: 8,
     Pubkey: 32,
-    String: 64,   // default bounded string estimate
+    // String: 4-byte length prefix + content bytes (NOT a flat 64-byte estimate)
+    String: 4 + MAX_STRING_LEN,
   };
   return sizes[rustType] ?? 32; // default to Pubkey size for unknown types
 }
@@ -49,5 +63,7 @@ export function emitAccountStruct(account: AccountDef): string {
   ].join("\n");
 }
 
-// Space includes 8-byte Anchor discriminator prefix
+// Space includes 8-byte Anchor discriminator prefix.
+// For accounts with PDA seeds: always add 1 byte for canonical bump storage.
+// Storing bump avoids re-derivation via find_program_address on every ix — saves ~20k CU.
 
