@@ -8,8 +8,10 @@ export function emitInstructionHandler(instr: InstructionDef): string {
   const ctxArg = args ? `, ${args}` : "";
 
   const body = [
-    `        // TODO: add validation`,
+    `        // TODO: add instruction logic`,
     `        // Accounts: ${instr.accounts.join(", ")}`,
+    `        // NOTE: use checked_add/checked_sub for all u64 arithmetic.`,
+    `        // Rust does not panic on integer overflow in release builds — silent wrap is a common exploit vector.`,
     `        Ok(())`,
   ].join("\n");
 
