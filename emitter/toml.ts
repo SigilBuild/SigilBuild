@@ -23,6 +23,22 @@ codegen-units = 1
 `;
 }
 
+export function emitProgramCargoToml(programName: string): string {
+  return `[package]
+name = "${programName}"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "${programName}"
+
+[dependencies]
+anchor-lang = { workspace = true }
+anchor-spl = { workspace = true }
+`;
+}
+
 export function emitAnchorToml(programName: string): string {
   return `[toolchain]
 anchor_version = "${config.ANCHOR_VERSION}"
@@ -47,4 +63,3 @@ test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 }
 
 // ANCHOR_VERSION and SOLANA_CLUSTER are injected from config at generation time
-

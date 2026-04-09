@@ -1,7 +1,7 @@
 import type { ProgramDesign, GenerationResult, GeneratedFile } from "../lib/types.js";
 import { emitAccountStruct } from "./accounts.js";
 import { emitInstructionHandler, emitAccountsContext } from "./instructions.js";
-import { emitCargoToml, emitAnchorToml } from "../emitter/toml.js";
+import { emitCargoToml, emitAnchorToml, emitProgramCargoToml } from "../emitter/toml.js";
 import { emitIdl } from "../emitter/idl.js";
 
 export function buildProgram(design: ProgramDesign): GenerationResult {
@@ -25,14 +25,13 @@ export function buildProgram(design: ProgramDesign): GenerationResult {
     const fn_ = emitInstructionHandler(instr);
     const content = [
       `use anchor_lang::prelude::*;`,
+      `use anchor_spl::token::TokenAccount;`,
       `use crate::state::*;`,
       `use crate::errors::${design.name.replace(/(^|_)([a-z])/g, (_, __, c: string) => c.toUpperCase())}Error;`,
       ``,
       ctx,
       ``,
-      `impl ${instr.name.replace(/(^|_)([a-z])/g, (_, __, c: string) => c.toUpperCase())} {`,
       fn_,
-      `}`,
     ].join("\n");
     files.push({
       path: `programs/${design.name}/src/instructions/${instr.name}.rs`,
@@ -44,6 +43,11 @@ export function buildProgram(design: ProgramDesign): GenerationResult {
   // TOML files
   files.push({ path: "Cargo.toml", content: emitCargoToml(design.name), lang: "toml" });
   files.push({ path: "Anchor.toml", content: emitAnchorToml(design.name), lang: "toml" });
+  files.push({
+    path: `programs/${design.name}/Cargo.toml`,
+    content: emitProgramCargoToml(design.name),
+    lang: "toml",
+  });
 
   // IDL
   files.push({ path: `idl/${design.name}.json`, content: emitIdl(design), lang: "json" });

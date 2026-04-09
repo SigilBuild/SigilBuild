@@ -5,7 +5,11 @@ import { selectTemplate } from "../templates/index.js";
 import { buildProgram } from "../builder/program.js";
 import { SIGIL_SYSTEM } from "./prompts.js";
 import type { GenerationRequest, GenerationResult, ProgramDesign } from "../lib/types.js";
-import { ProgramDesignSchema } from "../schemas/index.js";
+import {
+  AccountDefSchema,
+  InstructionDefSchema,
+  ProgramDesignSchema,
+} from "../schemas/index.js";
 
 const log = createLogger("SigilAgent");
 
@@ -174,8 +178,8 @@ export class SigilAgent {
             if (parsed.success) {
               design = parsed.data as ProgramDesign;
             } else {
-              log.warn("emit_program schema mismatch", { errors: parsed.error.flatten() });
-              design = result as ProgramDesign;
+              log.error("emit_program schema mismatch", { errors: parsed.error.flatten() });
+              throw new Error("emit_program returned an invalid ProgramDesign payload");
             }
             results.push({ type: "tool_result", tool_use_id: tb.id, content: JSON.stringify({ accepted: true }) });
             messages.push({ role: "assistant", content: response.content });
@@ -226,15 +230,15 @@ export class SigilAgent {
       }
 
       case "design_accounts": {
-        const accounts = input["accounts"] as ProgramDesign["accounts"];
+        const accounts = AccountDefSchema.array().parse(input["accounts"]);
         this.partialDesign.accounts = accounts;
         log.info("Accounts designed", { count: accounts.length, names: accounts.map((a) => a.name) });
         return { accepted: true, count: accounts.length };
       }
 
       case "design_instructions": {
-        const instructions = input["instructions"] as ProgramDesign["instructions"];
-        const errors = (input["custom_errors"] as string[]) ?? [];
+        const instructions = InstructionDefSchema.array().parse(input["instructions"]);
+        const errors = ((input["custom_errors"] as unknown) ?? []) as string[];
         this.partialDesign.instructions = instructions;
         this.partialDesign.customErrors = errors;
         log.info("Instructions designed", { count: instructions.length, errors: errors.length });
@@ -260,4 +264,3 @@ export class SigilAgent {
 }
 
 // emit_program intercept breaks the loop — no extra round-trip needed
-

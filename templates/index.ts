@@ -9,6 +9,15 @@ export interface Template {
 
 export const TEMPLATES: Template[] = [
   {
+    kind: "custom",
+    description: "Free-form custom program scaffold when no standard template is a clean fit",
+    keywords: [],
+    baseDesign: {
+      customErrors: ["InvalidState", "Unauthorized", "ConstraintViolation"],
+      features: ["Custom instruction scaffold", "Typed account modeling", "Anchor-compatible project layout"],
+    },
+  },
+  {
     kind: "staking",
     description: "Token staking with lockup periods, rewards accrual, and APY configuration",
     keywords: ["stake", "staking", "lockup", "apy", "rewards", "yield", "lock"],
@@ -62,13 +71,13 @@ export const TEMPLATES: Template[] = [
  * Match user description to the best template using keyword scoring.
  */
 export function selectTemplate(description: string, hint?: TemplateKind): Template {
-  if (hint && hint !== "custom") {
+  if (hint) {
     const t = TEMPLATES.find((t) => t.kind === hint);
     if (t) return t;
   }
 
   const lower = description.toLowerCase();
-  let best = TEMPLATES[0]!;
+  let best = TEMPLATES.find((t) => t.kind === "custom")!;
   let bestScore = 0;
 
   for (const tmpl of TEMPLATES) {
@@ -77,6 +86,10 @@ export function selectTemplate(description: string, hint?: TemplateKind): Templa
       bestScore = score;
       best = tmpl;
     }
+  }
+
+  if (bestScore === 0) {
+    return TEMPLATES.find((t) => t.kind === "custom")!;
   }
 
   return best;
