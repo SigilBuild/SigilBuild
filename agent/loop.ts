@@ -135,6 +135,7 @@ export class SigilAgent {
 
   async generate(request: GenerationRequest): Promise<GenerationResult> {
     log.info("Generating Anchor program", { description: request.description.slice(0, 80) });
+    this.partialDesign = {};
 
     const messages: Anthropic.MessageParam[] = [
       {
@@ -171,7 +172,15 @@ export class SigilAgent {
         const results: Anthropic.ToolResultBlockParam[] = [];
 
         for (const tb of toolBlocks) {
-          const result = await this.executeTool(tb.name, tb.input as Record<string, unknown>, request);
+          let result: unknown;
+
+          try {
+            result = await this.executeTool(tb.name, tb.input as Record<string, unknown>, request);
+          } catch (err) {
+            throw new Error(
+              `Tool ${tb.name} failed: ${err instanceof Error ? err.message : String(err)}`
+            );
+          }
 
           if (tb.name === "emit_program" && result && typeof result === "object") {
             const parsed = ProgramDesignSchema.safeParse(result);

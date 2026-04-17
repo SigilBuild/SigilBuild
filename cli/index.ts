@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { writeFileSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
+import { mkdirSync, unlinkSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
 import { SigilAgent } from "../agent/loop.js";
 import { validateDesign } from "../validator/idl.js";
 import { GenerationRequestSchema } from "../schemas/index.js";
@@ -40,29 +40,26 @@ async function runGenerate(args: string[]) {
 
   const agent = new SigilAgent();
 
-  console.log(`\n  Sigil · Anchor Program Generator\n`);
+  console.log("\n  Sigil · Anchor Program Generator\n");
   console.log(`  Generating: ${description.slice(0, 80)}...\n`);
 
   const result = await agent.generate(parsed.data);
 
-  // Validate before writing
   const validation = validateDesign(result.design);
   if (!validation.valid) {
     console.error("Design validation failed:");
-    validation.errors.forEach((e) => console.error(`  ✗ ${e}`));
+    validation.errors.forEach((error) => console.error(`  x ${error}`));
     process.exit(1);
   }
   if (validation.warnings.length > 0) {
-    validation.warnings.forEach((w) => console.warn(`  ⚠ ${w}`));
+    validation.warnings.forEach((warning) => console.warn(`  ! ${warning}`));
   }
 
-  // Write files
   const outDir = parsed.data.outputDir ?? config.OUTPUT_DIR;
+  writeGeneratedFiles(outDir, result.programName, result.files);
+
   for (const file of result.files) {
-    const fullPath = join(outDir, result.programName, file.path);
-    mkdirSync(dirname(fullPath), { recursive: true });
-    writeFileSync(fullPath, file.content, "utf-8");
-    console.log(`  ✓ ${file.path}`);
+    console.log(`  + ${file.path}`);
   }
 
   console.log(`\n  Generated ${result.files.length} files · ${result.linesGenerated} lines`);
@@ -70,9 +67,38 @@ async function runGenerate(args: string[]) {
   console.log(`  Next: cd ${join(outDir, result.programName)} && anchor build\n`);
 }
 
+function writeGeneratedFiles(
+  outDir: string,
+  programName: string,
+  files: Array<{ path: string; content: string }>
+) {
+  const writtenFiles: string[] = [];
+
+  try {
+    for (const file of files) {
+      const fullPath = join(outDir, programName, file.path);
+      mkdirSync(dirname(fullPath), { recursive: true });
+      writeFileSync(fullPath, file.content, "utf-8");
+      writtenFiles.push(fullPath);
+    }
+  } catch (err) {
+    for (const writtenFile of writtenFiles.reverse()) {
+      try {
+        unlinkSync(writtenFile);
+      } catch {
+        // Best-effort cleanup to avoid leaving a half-written project tree.
+      }
+    }
+
+    throw new Error(
+      `Failed while writing generated output: ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
+}
+
 function printHelp() {
   console.log(`
-  Sigil — AI-powered Solana Anchor program generator
+  Sigil - AI-powered Solana Anchor program generator
 
   Commands:
     generate "<description>"   Generate a program from a description
@@ -91,9 +117,7 @@ function printHelp() {
 }
 
 main().catch((err) => {
+  log.error("CLI generation failed", { error: err instanceof Error ? err.message : String(err) });
   console.error("Fatal:", err instanceof Error ? err.message : err);
   process.exit(1);
 });
-
-// CLI validates input with Zod before calling the agent — no bad requests reach Claude
-
