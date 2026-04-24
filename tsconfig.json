@@ -15,7 +15,6 @@
     "sourceMap": true
   },
   "include": ["."],
-  "exclude": ["dist", "node_modules", "output"]
+  "exclude": ["dist", "node_modules", "output", "site"]
 }
-
 
