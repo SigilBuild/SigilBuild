@@ -11,7 +11,7 @@ Sigil is an AI agent that turns plain-English descriptions into complete, produc
 
 ---
 
-## Generate From the CLI
+## Live Generation Console
 
 <img src="assets/preview-terminal.png" alt="Sigil generation terminal" width="100%" />
 
@@ -19,11 +19,11 @@ One command. Describe what you want to build. Sigil's Claude agent reasons throu
 
 Every generation produces a complete Anchor project: Rust source split by instruction, on-chain account structs with exact space, a valid IDL, and the config files needed to build and deploy.
 
-## From Request to Project
+## How Sigil Builds
 
 <img src="assets/preview-workflow.png" alt="Sigil request to Anchor project workflow" width="100%" />
 
-Sigil's generation path: parse the plain-English request, select the closest program template, design accounts and instructions, validate the output, and write the full Anchor project structure.
+Sigil's build path: turn the request into a program blueprint, choose the closest template, design accounts and instructions, validate signer and PDA constraints, then emit the complete Anchor project with tests and documentation.
 
 ---
 
