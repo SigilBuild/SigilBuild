@@ -8,3 +8,6 @@ output/
 coverage/
 *.tsbuildinfo
 site/
+# Local env overrides
+.env.local
+.env.*.local
